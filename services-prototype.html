@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HI Physiotherapy Clinic — Services & Packages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c0a30;
+    --violet-deep:#2a0f4a;
+    --violet:#3d1568;
+    --purple:#5a1f8f;
+    --purple-light:#7b3bb5;
+    --gold:#e3b04b;
+    --gold-bright:#f2cb6f;
+    --coral:#e2574c;
+    --cream:#f8f4ff;
+    --cream-dim:rgba(248,244,255,0.72);
+    --line:rgba(227,176,75,0.28);
+    --card:rgba(255,255,255,0.045);
+    --card-hover:rgba(255,255,255,0.08);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(123,59,181,0.35), transparent 55%),
+      radial-gradient(ellipse at 90% 10%, rgba(226,87,76,0.12), transparent 45%),
+      linear-gradient(160deg, var(--ink) 0%, var(--violet-deep) 45%, var(--violet) 100%);
+    color:var(--cream);
+    font-family:'Jost', sans-serif;
+    font-weight:400;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Playfair Display', serif;}
+
+  /* ---------- Emblem ---------- */
+  .emblem{
+    width:74px;height:74px;border-radius:50%;
+    background:#fbf9ff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;
+    box-shadow:0 0 0 1px rgba(227,176,75,0.5), 0 8px 30px rgba(0,0,0,0.35);
+    position:relative;
+  }
+  .emblem svg{width:40px;height:40px;animation:breathe 4.5s ease-in-out infinite;}
+  @keyframes breathe{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.08);}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    text-align:center;
+    padding:64px 24px 46px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero .corner{
+    position:absolute;width:110px;height:110px;opacity:0.55;
+  }
+  .hero .corner.tl{top:18px;left:18px;}
+  .hero .corner.tr{top:18px;right:18px;transform:scaleX(-1);}
+  .hero .corner.bl{bottom:18px;left:18px;transform:scaleY(-1);}
+  .hero .corner.br{bottom:18px;right:18px;transform:scale(-1,-1);}
+  .hero h1{
+    font-size:clamp(28px,4.4vw,44px);
+    letter-spacing:0.5px;
+    margin:0 0 10px;
+    color:var(--cream);
+    text-transform:uppercase;
+  }
+  .hero .tagline{
+    font-style:italic;
+    color:var(--gold-bright);
+    font-size:17px;
+    margin:0 0 8px;
+    font-family:'Playfair Display', serif;
+  }
+  .hero .subline{
+    color:var(--cream-dim);
+    font-size:14px;
+    letter-spacing:0.3px;
+    max-width:520px;
+    margin:0 auto;
+  }
+  .hero .rule{
+    width:110px;height:1px;background:var(--gold);
+    margin:22px auto 0;opacity:0.6;
+  }
+
+  /* ---------- Sticky nav ---------- */
+  .navwrap{
+    position:sticky;top:0;z-index:50;
+    background:rgba(26,10,46,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .navtabs{
+    max-width:1100px;margin:0 auto;
+    display:flex;gap:4px;overflow-x:auto;
+    padding:10px 16px;scrollbar-width:thin;
+  }
+  .navtabs::-webkit-scrollbar{height:4px;}
+  .navtabs::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px;}
+  .navtab{
+    white-space:nowrap;
+    font-family:'Jost',sans-serif;
+    font-size:13px;font-weight:500;letter-spacing:0.3px;
+    color:var(--cream-dim);
+    background:transparent;border:1px solid transparent;
+    padding:9px 16px;border-radius:999px;cursor:pointer;
+    transition:all .2s ease;
+  }
+  .navtab:hover{color:var(--cream);border-color:var(--line);}
+  .navtab.active{
+    color:var(--ink);background:var(--gold);
+    font-weight:600;
+  }
+
+  /* ---------- Sections ---------- */
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+  section.panel{display:none;padding:46px 0 20px;animation:fade .35s ease;}
+  section.panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .panel-head{margin-bottom:8px;}
+  .eyebrow{
+    color:var(--gold);font-size:12px;letter-spacing:2px;
+    text-transform:uppercase;font-weight:600;
+  }
+  .panel-title{font-size:clamp(22px,3vw,30px);margin:6px 0 6px;color:var(--cream);}
+  .panel-sub{color:var(--cream-dim);font-size:14.5px;max-width:640px;margin-bottom:30px;line-height:1.6;}
+
+  /* ---------- Service cards ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 22px 18px;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .card:hover{background:var(--card-hover);transform:translateY(-2px);}
+  .card h3{
+    font-size:17px;color:var(--gold-bright);margin:0 0 6px;
+    letter-spacing:0.2px;
+  }
+  .card .note{
+    font-size:12.5px;color:var(--cream-dim);line-height:1.5;
+    margin:0 0 14px;
+  }
+  .rows{display:flex;flex-direction:column;gap:0;}
+  .row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:8px 0;border-top:1px dashed rgba(255,255,255,0.1);
+    font-size:14px;
+  }
+  .row:first-child{border-top:none;}
+  .row .label{color:var(--cream);}
+  .row .price{color:var(--gold-bright);font-weight:600;font-variant-numeric:tabular-nums;}
+  .row .price small{color:var(--cream-dim);font-weight:400;}
+
+  /* ---------- Condition package table ---------- */
+  .pkg-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .pkg-table thead th{
+    text-align:left;color:var(--gold);font-size:11.5px;letter-spacing:1.2px;
+    text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(--line);
+  }
+  .pkg-table tbody td{
+    padding:14px;border-bottom:1px solid rgba(255,255,255,0.06);
+    vertical-align:top;color:var(--cream-dim);line-height:1.5;
+  }
+  .pkg-table tbody tr:hover{background:rgba(255,255,255,0.03);}
+  .pkg-table td.name{color:var(--cream);font-weight:600;width:30%;}
+  .pkg-table td.dur{white-space:nowrap;color:var(--cream-dim);width:14%;}
+  .pkg-table td.price{white-space:nowrap;font-weight:600;color:var(--gold-bright);width:16%;}
+  .pkg-table td.price .save{
+    display:block;font-size:10.5px;color:var(--coral);font-weight:500;margin-top:2px;
+  }
+  .table-scroll{
+    overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--card);
+  }
+  .badge{
+    display:inline-block;font-size:10.5px;padding:2px 9px;border-radius:999px;
+    background:rgba(226,87,76,0.18);color:#f2a49d;border:1px solid rgba(226,87,76,0.35);
+    margin-left:8px;vertical-align:middle;
+  }
+
+  /* ---------- Special packages ---------- */
+  .special-hero{
+    background:linear-gradient(135deg, rgba(90,31,143,0.5), rgba(226,87,76,0.12));
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;margin-bottom:20px;
+  }
+  .special-hero h3{color:var(--coral);font-size:14px;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 14px;}
+  .flex-price-row{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 20px;
+    padding:10px 0;border-top:1px dashed rgba(255,255,255,0.12);
+  }
+  .flex-price-row:first-of-type{border-top:none;}
+  .flex-price-row .l{font-size:14px;color:var(--cream);}
+  .flex-price-row .r{font-size:14px;color:var(--gold-bright);font-weight:600;white-space:nowrap;}
+
+  .assess-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:10px;}
+  .assess-item{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;
+  }
+  .assess-item .l{font-size:13px;color:var(--cream-dim);margin-bottom:4px;}
+  .assess-item .r{font-size:17px;color:var(--gold-bright);font-weight:600;}
+
+  .policy{
+    margin-top:26px;padding:18px 20px;border-left:2px solid var(--coral);
+    background:rgba(226,87,76,0.06);border-radius:0 10px 10px 0;
+    font-size:12.5px;line-height:1.7;color:var(--cream-dim);
+  }
+  .policy strong{color:var(--cream);}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    text-align:center;padding:40px 20px 50px;margin-top:30px;
+    color:var(--cream-dim);font-size:13px;
+  }
+  footer .contact{
+    color:var(--gold-bright);font-family:'Playfair Display',serif;
+    font-size:19px;margin-bottom:6px;
+  }
+  footer .phone{font-size:16px;letter-spacing:1px;color:var(--cream);}
+  footer .rule{width:70px;height:1px;background:var(--gold);margin:22px auto;opacity:0.5;}
+
+  /* ---------- Proto banner ---------- */
+  .proto-banner{
+    background:var(--gold);color:var(--ink);text-align:center;
+    font-size:12.5px;font-weight:600;letter-spacing:0.4px;
+    padding:9px 12px;
+  }
+
+  @media (max-width:640px){
+    .pkg-table td.name{width:auto;}
+    .hero .corner{width:70px;height:70px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="proto-banner">PROTOTYPE — for client review · content sourced from clinic price list · not final visual design</div>
+
+<header class="hero">
+  <svg class="corner tl" viewBox="0 0 100 100"><path d="M5 5 Q5 40 40 40 M5 5 Q40 5 40 40" stroke="#e3b04b" stroke-width="1" fill="none" opacity="0.7"/><circle cx="12" cy="12" r="2" fill="#e3b04b"/></svg>
+  <svg class="corner tr" viewBox="0 0 100 100"><path d="M5 5 Q5 40 40 40 M5 5 Q40 5 40 40" stroke="#e3b04b" stroke-width="1" fill="none" opacity="0.7"/><circle cx="12" cy="12" r="2" fill="#e3b04b"/></svg>
+  <svg class="corner bl" viewBox="0 0 100 100"><path d="M5 5 Q5 40 40 40 M5 5 Q40 5 40 40" stroke="#e3b04b" stroke-width="1" fill="none" opacity="0.7"/><circle cx="12" cy="12" r="2" fill="#e3b04b"/></svg>
+  <svg class="corner br" viewBox="0 0 100 100"><path d="M5 5 Q5 40 40 40 M5 5 Q40 5 40 40" stroke="#e3b04b" stroke-width="1" fill="none" opacity="0.7"/><circle cx="12" cy="12" r="2" fill="#e3b04b"/></svg>
+
+  <div class="emblem">
+    <svg viewBox="0 0 40 40" fill="none">
+      <path d="M8 20 Q4 20 4 12 M4 12 Q4 6 10 6" stroke="#c62828" stroke-width="2.2" fill="none" stroke-linecap="round" transform="translate(0,0)"/>
+      <path d="M32 20 Q36 20 36 12 M36 12 Q36 6 30 6" stroke="#1a4fb0" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M8 20 Q4 20 4 28 M4 28 Q4 34 10 34" stroke="#1a4fb0" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M32 20 Q36 20 36 28 M36 28 Q36 34 30 34" stroke="#c62828" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <line x1="20" y1="4" x2="20" y2="36" stroke="#c62828" stroke-width="2.6" stroke-linecap="round"/>
+      <line x1="6" y1="20" x2="34" y2="20" stroke="#1a4fb0" stroke-width="2.6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h1>HI Physiotherapy Clinic</h1>
+  <p class="tagline">&ldquo;Not Just Pain Relief — A 360&deg; Healing Experience.&rdquo;</p>
+  <p class="subline">Nilgiris' First Globally Trained &amp; Certified Physiotherapist — Chiropractic, Osteopathy, Physiotherapy &amp; Natural Healing under one roof.</p>
+  <div class="rule"></div>
+</header>
+
+<div class="navwrap">
+  <div class="navtabs" id="navtabs">
+    <button class="navtab active" data-target="core">Core Therapies</button>
+    <button class="navtab" data-target="tech">Techniques</button>
+    <button class="navtab" data-target="trad">Traditional &amp; Reflex</button>
+    <button class="navtab" data-target="natural">Natural Healing</button>
+    <button class="navtab" data-target="conditions">Condition Packages</button>
+    <button class="navtab" data-target="special">Special Packages</button>
+    <button class="navtab" data-target="other">Other Programs</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- CORE THERAPIES -->
+  <section class="panel active" id="core">
+    <div class="panel-head">
+      <div class="eyebrow">Treatment Techniques</div>
+      <h2 class="panel-title">Core Therapies</h2>
+      <p class="panel-sub">The four foundation treatments offered at the clinic. Combination discounts apply when therapies are stacked in one visit.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Physiotherapy</h3>
+        <p class="note">Includes detailed assessment of the condition, report analysis, counselling, electrical equipment &amp; exercise prescription. LASER add-on: +Rs.500.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">10 Days</span><span class="price">Rs.4,500</span></div>
+          <div class="row"><span class="label">35 Days</span><span class="price">Rs.15,000</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Chiropractic Treatment</h3>
+        <p class="note">Full body detailed assessment and correction.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.10,000</span></div>
+          <div class="row"><span class="label">5 Days <small>(alternative)</small></span><span class="price">Rs.45,000</span></div>
+          <div class="row"><span class="label">Maintenance <small>after 1st session</small></span><span class="price">Rs.8,000</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Osteopathy Treatment</h3>
+        <p class="note">Manual, hands-on correction of structural imbalance.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.2,000</span></div>
+          <div class="row"><span class="label">Weekly once <small>(5 session)</small></span><span class="price">Rs.8,000</span></div>
+          <div class="row"><span class="label">With CHIRO</span><span class="price">Rs.500 <small>less</small></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Fascial Manipulation</h3>
+        <p class="note">Targeted release of fascial restriction points.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.1,500</span></div>
+          <div class="row"><span class="label">With CHIRO</span><span class="price">Rs.500 <small>less</small></span></div>
+          <div class="row"><span class="label">With OSTEO</span><span class="price">Rs.200 <small>less</small></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECHNIQUES -->
+  <section class="panel" id="tech">
+    <div class="panel-head">
+      <div class="eyebrow">Applied Techniques</div>
+      <h2 class="panel-title">Manual &amp; Mechanical Techniques</h2>
+      <p class="panel-sub">Individual techniques that can be booked stand-alone or layered into any treatment plan above.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Manual Techniques</h3>
+        <p class="note">Myofascial Release (MFR), Trigger Point Therapy, Soft Tissue Mobilization (STM), Joint Mobilization, Muscle Energy Technique (MET), Positional Release Therapy, Mulligan Mobilization with Movement (MWM), Cyriax.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day <small>(single technique)</small></span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">10 Days</span><span class="price">Rs.4,500</span></div>
+          <div class="row"><span class="label">With CHIRO</span><span class="price">Rs.500 <small>less</small></span></div>
+          <div class="row"><span class="label">With OSTEO</span><span class="price">Rs.500 <small>less</small></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Mechanical Techniques</h3>
+        <p class="note">K-Taping, Rigid Tapping, Dry Needling, Cupping Therapy, Massage Device, IASTM.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day <small>(single technique)</small></span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">With other treatments</span><span class="price">Rs.100 <small>less</small></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRADITIONAL & REFLEX -->
+  <section class="panel" id="trad">
+    <div class="panel-head">
+      <div class="eyebrow">Manual Techniques</div>
+      <h2 class="panel-title">Traditional &amp; Reflex Therapies</h2>
+      <p class="panel-sub">Traditional Tamil healing methods alongside reflex-point and sensory therapies.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Varmakalai Sigichai</h3>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">10 Days</span><span class="price">Rs.4,500</span></div>
+          <div class="row"><span class="label">30 Days</span><span class="price">Rs.14,000</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Foot Reflexology <small style="font-size:11px;">(by stick)</small></h3>
+        <p class="note">With hand: +Rs.250 per day.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.750</span></div>
+          <div class="row"><span class="label">15 Days</span><span class="price">Rs.11,000</span></div>
+          <div class="row"><span class="label">30 Days</span><span class="price">Rs.21,000</span></div>
+          <div class="row"><span class="label">With Varmakalai <small>(1 day)</small></span><span class="price">Rs.1,000</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Sujok <small style="font-size:11px;">(hand reflex)</small></h3>
+        <p class="note">Instrument usage for exercise purpose: +Rs.150/day.</p>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.300</span></div>
+          <div class="row"><span class="label">15 Days</span><span class="price">Rs.4,250</span></div>
+          <div class="row"><span class="label">30 Days</span><span class="price">Rs.7,500</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Therapeutic Massage <small style="font-size:11px;">(single part)</small></h3>
+        <div class="rows">
+          <div class="row"><span class="label">1 Day</span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">10 Days</span><span class="price">Rs.4,500</span></div>
+          <div class="row"><span class="label">30 Days</span><span class="price">Rs.14,000</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Sensory &amp; Specialty Therapies</h3>
+        <p class="note">Dorn Therapy &amp; Acupuncture undertaken with prior appointment only.</p>
+        <div class="rows">
+          <div class="row"><span class="label">Magnetic Therapy <small>/session</small></span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">Art Therapy <small>/session</small></span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">Aromatherapy <small>/session</small></span><span class="price">Rs.500</span></div>
+          <div class="row"><span class="label">Dorn / Acupuncture <small>/session</small></span><span class="price">Rs.500</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NATURAL HEALING -->
+  <section class="panel" id="natural">
+    <div class="panel-head">
+      <div class="eyebrow">Natural Healing Therapies</div>
+      <h2 class="panel-title">Baths, Massage &amp; Detoxification</h2>
+      <p class="panel-sub">Naturopathy-based treatments — many require one day's prior appointment.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="pkg-table">
+        <thead><tr><th>#</th><th>Therapy</th><th>Price</th></tr></thead>
+        <tbody>
+          <tr><td class="dur">1</td><td class="name">Herbal Steam Bath <span style="font-weight:400;color:var(--cream-dim);">with Herbal Bath</span></td><td class="price">Rs.1,000</td></tr>
+          <tr><td class="dur">2</td><td class="name">Steam Bath <span style="font-weight:400;color:var(--cream-dim);">with Herbal Bath</span></td><td class="price">Rs.500</td></tr>
+          <tr><td class="dur">3</td><td class="name">Mud Bath <span style="font-weight:400;color:var(--cream-dim);">(Home)</span></td><td class="price">Rs.500</td></tr>
+          <tr><td class="dur">4</td><td class="name">Mud Bath <span style="font-weight:400;color:var(--cream-dim);">(Clinic) with Herbal Bath</span></td><td class="price">Rs.1,500</td></tr>
+          <tr><td class="dur">5</td><td class="name">Mud Bath <span style="font-weight:400;color:var(--cream-dim);">(Clinic) with Full Body Massage &amp; Herbal Bath</span></td><td class="price">Rs.4,500</td></tr>
+          <tr><td class="dur">6</td><td class="name">Herbal Full Body Massage <span style="font-weight:400;color:var(--cream-dim);">(incl. herbal steam &amp; herbal bath)</span></td><td class="price">Rs.3,000</td></tr>
+          <tr><td class="dur">7</td><td class="name">Foot Massage <span style="font-weight:400;color:var(--cream-dim);">followed by footbath, 15 min with Epsom salt</span></td><td class="price">Rs.1,500</td></tr>
+          <tr><td class="dur">8</td><td class="name">20 Min Foot Soak <span style="font-weight:400;color:var(--cream-dim);">in foot massager</span></td><td class="price">Rs.1,000</td></tr>
+          <tr><td class="dur">9</td><td class="name">Banana Leaf Bath <span style="font-weight:400;color:var(--cream-dim);">with 30 min full body massage &amp; herbal bath — prior appointment needed</span></td><td class="price">Rs.4,000</td></tr>
+          <tr><td class="dur">10</td><td class="name">Foot Bath Detoxification</td><td class="price">Rs.1,500</td></tr>
+          <tr><td class="dur">11</td><td class="name">Detoxification <span style="font-weight:400;color:var(--cream-dim);">(massage, mud bath, banana leaf bath, foot detox, enema)</span></td><td class="price">Rs.15,000</td></tr>
+          <tr><td class="dur">12</td><td class="name">Elaki / Podiki <span style="font-weight:400;color:var(--cream-dim);">(Naturopathy)</span></td><td class="price">Rs.1,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CONDITION PACKAGES -->
+  <section class="panel" id="conditions">
+    <div class="panel-head">
+      <div class="eyebrow">Packages</div>
+      <h2 class="panel-title">Condition-Specific Packages<span class="badge">Package price shown, regular price in brackets</span></h2>
+      <p class="panel-sub">Multi-day plans built for specific diagnoses. Days shown as total(technique+maintenance) where applicable.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="pkg-table">
+        <thead><tr><th>Condition</th><th>Plan</th><th>Duration</th><th>Package Price</th></tr></thead>
+        <tbody id="condTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SPECIAL PACKAGES -->
+  <section class="panel" id="special">
+    <div class="panel-head">
+      <div class="eyebrow">Special Packages</div>
+      <h2 class="panel-title">Holistic Plans, Stroke Rehab &amp; Assessments</h2>
+      <p class="panel-sub">Holistic approach combines Chiropractic + Physiotherapy + Osteopathy in one plan.</p>
+    </div>
+
+    <div class="special-hero">
+      <h3>General Full Holistic Approach</h3>
+      <div class="flex-price-row"><span class="l">1 Day Payment</span><span class="r">Rs.15,000</span></div>
+      <div class="flex-price-row"><span class="l">10 Days Payment <small style="color:var(--cream-dim);">— valid 6 months</small></span><span class="r">Rs.1,25,000 <small style="color:var(--coral);font-weight:500;">(Rs.25,000 less)</small></span></div>
+      <div class="flex-price-row"><span class="l">30 Days / 1 Year Payment <small style="color:var(--cream-dim);">— valid 1 year</small></span><span class="r">Rs.4,00,000 <small style="color:var(--coral);font-weight:500;">(Rs.50,000 less)</small></span></div>
+    </div>
+
+    <div class="special-hero">
+      <h3>Holistic Stroke Rehabilitation</h3>
+      <p class="note" style="margin-bottom:12px;">Includes Electrotherapy, Manual Therapy, NDT Techniques, PNF Techniques, Varmakalai stimulation, Diet &amp; Nutrition guidance, and Hand Rehabilitation.</p>
+      <div class="flex-price-row"><span class="l">1 Day</span><span class="r">Rs.1,500</span></div>
+      <div class="flex-price-row"><span class="l">30 Days</span><span class="r">Rs.38,000</span></div>
+    </div>
+
+    <h3 style="color:var(--gold-bright);font-size:15px;letter-spacing:0.4px;margin:30px 0 4px;">Assessments &amp; Consultations</h3>
+    <div class="assess-grid">
+      <div class="assess-item"><div class="l">Consultation Fee (just consultation)</div><div class="r">Rs.300</div></div>
+      <div class="assess-item"><div class="l">Consultation for Treatment <small style="font-size:11px;font-weight:400;color:var(--cream-dim);">(BP, Diabetes, O2 sat, height, weight, general assessment)</small></div><div class="r">Rs.500</div></div>
+      <div class="assess-item"><div class="l">Chiropractic Assessment</div><div class="r">Rs.2,000</div></div>
+      <div class="assess-item"><div class="l">Flexibility Assessment</div><div class="r">Rs.1,000</div></div>
+      <div class="assess-item"><div class="l">House Visit <small style="font-size:11px;font-weight:400;color:var(--cream-dim);">(45 min–1 hr treatment, per day)</small></div><div class="r">Rs.2,000 <small style="font-size:11px;font-weight:400;color:var(--cream-dim);">or double clinic charge for different treatments; +Rs.250 per 15 min beyond 10 min travel</small></div></div>
+    </div>
+
+    <div class="policy">
+      <strong>Payment &amp; discount policy:</strong> 10-day and 30-day packages are discounted only on one-time single pre-payment (multiple persons can share this offer). Money once paid is not refunded under any circumstances. Pre-payment session validity is 3 months from the date of payment — attending regularly is the client's responsibility, and no further concession is given for missed sessions. Treatment begins only after payment is received. Only one condition is treated at a time; additional conditions double or triple the payment.
+    </div>
+  </section>
+
+  <!-- OTHER PROGRAMS -->
+  <section class="panel" id="other">
+    <div class="panel-head">
+      <div class="eyebrow">Other Treatments</div>
+      <h2 class="panel-title">Other Wellness Programs</h2>
+      <p class="panel-sub">Supplementary programs run alongside core treatment.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="pkg-table">
+        <thead><tr><th>#</th><th>Program</th><th>Duration</th><th>Price</th></tr></thead>
+        <tbody>
+          <tr><td class="dur">1</td><td class="name">Vision Therapy</td><td class="dur">30 Days</td><td class="price">Rs.15,000</td></tr>
+          <tr><td class="dur">2</td><td class="name">Meditation</td><td class="dur">30 Days</td><td class="price">Rs.1,000</td></tr>
+          <tr><td class="dur">3</td><td class="name">Aerobics</td><td class="dur">30 Days</td><td class="price">Rs.1,000</td></tr>
+          <tr><td class="dur">4</td><td class="name">Counselling</td><td class="dur">1 Session</td><td class="price">Rs.500</td></tr>
+          <tr><td class="dur">5</td><td class="name">Fasting Therapy</td><td class="dur">1 Session</td><td class="price">Rs.500</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="policy" style="border-left-color:var(--gold);background:rgba(227,176,75,0.06);">
+      <strong>Vision Therapy note:</strong> Suitable for ages 10–60. Must begin only with an ophthalmologist's prescription of current eye power, with a recommendation to wear specs going forward.
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="rule"></div>
+  <div class="contact">For additional details, contact</div>
+  <div style="font-size:16px;color:var(--cream);margin-bottom:4px;">Dr. Iswarya S. (P.T.)</div>
+  <div class="phone">9629449633</div>
+</footer>
+
+<script>
+  const conditionPackages = [
+    ["Frozen Shoulder","Mild to Moderate — 5 days technique + 5 days maintenance & home exercise","10 days","Rs.11,500","Rs.12,500"],
+    ["Frozen Shoulder","Chronic — 10 days technique + 5 days maintenance & home exercise","15 days","Rs.21,000","Rs.22,500"],
+    ["Lower Back Pain","Mild to Moderate, with alternative Chiropractic correction days","12 (5+5+2) days","Rs.24,000","Rs.25,500"],
+    ["Lower Back Pain","Chronic, with alternative Chiropractic correction days","12 (7+5) days","Rs.30,500","Rs.32,500"],
+    ["Lower Back Pain","Mild to Moderate — Releases & equipment / home exercise","8 (6+2) days","Rs.12,000","Rs.14,000"],
+    ["Lower Back Pain","Chronic — Releases & equipment / home exercise","10 (8+2) days","Rs.16,000","Rs.18,000"],
+    ["Cervical Pain","Mild to Moderate, with alternative Chiropractic correction days","5 (3+2) days","Rs.5,000","Rs.6,500"],
+    ["Cervical Pain","Chronic, with alternative Chiropractic correction days","10 (5+5) days","Rs.14,000","Rs.15,500"],
+    ["Hip / Knee Osteoarthritis","Mild to Moderate, with alternative Chiropractic correction days","10 (5+5) days","Rs.11,000","Rs.12,500"],
+    ["Hip / Knee Osteoarthritis","Chronic, with movement restriction, alt. Chiropractic correction","15 (10+5) days","Rs.19,000","Rs.20,000"],
+    ["Fracture Rehabilitation","Started within a week of POP removal","10 (5+5) days","Rs.7,500","Rs.8,500"],
+    ["Fracture Rehab (Plates &amp; Screws)","Started within a week of POP removal","10 (5+5) days","Rs.8,500","Rs.10,000"],
+    ["Fracture Rehabilitation","Started after 10 days of POP removal","10 (5+5) days","Rs.10,000","Rs.12,500"],
+    ["Fracture Rehab (Plates &amp; Screws)","Started after 10 days of POP removal","15 (10+5) days","Rs.15,000","Rs.17,500"],
+    ["Urinary Incontinence / Women's Health","Full assessment &amp; correction plan","30 days","Rs.30,000","Rs.32,000"],
+    ["Sprain and Strain","Fascial releases &amp; equipment / home exercise","8 (6+2) days","Rs.12,000","Rs.14,000"],
+    ["Joint Instability","Release &amp; strength training","30 days","Rs.30,000","Rs.32,000"],
+    ["Muscle Tightness","Release, equipment &amp; strength training","10 days","Rs.14,000","Rs.16,000"],
+    ["Osteoporosis","Release &amp; strength training","30 days","Rs.30,000","Rs.32,000"],
+    ["Herniated Disc","Traction, release, equipment, strength training","10 (5+5) days","Rs.8,500","Rs.10,000"],
+    ["Joint Replacement","Release, equipment &amp; strength training","10 days","Rs.14,000","Rs.16,000"],
+    ["Scoliosis","With alternative Chiropractic correction days","10 (5+5) days","Rs.14,000","Rs.15,500"],
+    ["Tendinitis","Releases &amp; equipment / home exercise","8 (6+2) days","Rs.12,000","Rs.14,000"],
+    ["Rotator Cuff Injury","5 days technique + 10 days maintenance &amp; home exercise","15 days","Rs.11,000","Rs.12,500"],
+    ["Rheumatoid Arthritis","5 days technique + 10 days maintenance &amp; home exercise","15 days","Rs.11,000","Rs.12,500"],
+    ["Postural Correction","With alternative Chiropractic correction days","10 (5+5) days","Rs.14,000","Rs.15,500"],
+    ["COPD, Asthma, Bronchitis","With alternative Chiropractic correction days","5 (3+2) days","Rs.5,000","Rs.6,500"],
+    ["Coccydynia","With alternative Chiropractic correction days","5 (3+2) days","Rs.5,000","Rs.6,500"],
+    ["All TMJ Issues","With alternative Chiropractic correction days","5 (3+2) days","Rs.5,000","Rs.6,500"],
+  ];
+
+  const tbody = document.getElementById('condTableBody');
+  conditionPackages.forEach(([name, plan, dur, price, reg]) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="name">${name}</td>
+      <td>${plan}</td>
+      <td class="dur">${dur}</td>
+      <td class="price">${price}<span class="save">Reg. ${reg}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const tabs = document.querySelectorAll('.navtab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+      window.scrollTo({top: document.querySelector('.navwrap').offsetTop, behavior:'smooth'});
+    });
+  });
+</script>
+</body>
+</html>
